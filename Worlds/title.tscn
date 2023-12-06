@@ -1,0 +1,269 @@
+[gd_scene load_steps=19 format=3 uid="uid://bgugy0v18el3f"]
+
+[ext_resource type="Script" path="res://Worlds/levelProperties.gd" id="1_gp50i"]
+[ext_resource type="Texture2D" uid="uid://dsf5k7q5eop6r" path="res://UI/Images/Sunflower.png" id="2_bwv21"]
+[ext_resource type="Texture2D" uid="uid://bavvqgm4m3koh" path="res://UI/Images/acorn.png" id="3_lkekw"]
+[ext_resource type="FontFile" uid="uid://843bo5oy4r3s" path="res://UI/SigmarOne-Regular.ttf" id="5_edqm6"]
+[ext_resource type="Environment" uid="uid://b0ltdgsbqw2m1" path="res://Worlds/world_environment.tres" id="7_hgnnl"]
+[ext_resource type="PackedScene" uid="uid://btn1fjffa1mtp" path="res://Player/acornModel.tscn" id="8_n7m35"]
+[ext_resource type="PackedScene" uid="uid://dvflu1f4hxcqw" path="res://WorldBlocks/Imports/Moon.glb" id="11_g3ylg"]
+[ext_resource type="PackedScene" uid="uid://dv3agdxbvkq4b" path="res://WorldBlocks/Imports/Earth.glb" id="12_0oq3f"]
+[ext_resource type="Script" path="res://Worlds/StartUi.gd" id="17_vbvrs"]
+[ext_resource type="PackedScene" uid="uid://bxt2snnlcra4g" path="res://UI/transition.tscn" id="20_pne6m"]
+
+[sub_resource type="Animation" id="Animation_8ovnh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sunflower:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_danpn"]
+resource_name = "SunflowerSpin"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sunflower:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.977384, 0.0, -0.977384, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2q7uk"]
+_data = {
+"RESET": SubResource("Animation_8ovnh"),
+"SunflowerSpin": SubResource("Animation_danpn")
+}
+
+[sub_resource type="Theme" id="Theme_vaimv"]
+default_font = ExtResource("5_edqm6")
+default_font_size = 30
+
+[sub_resource type="Animation" id="Animation_ew4jo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_param/circle_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.05]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_55taj"]
+resource_name = "end"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_param/circle_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3.4, 3.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.05, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_wh74x"]
+resource_name = "endFast"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_param/circle_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.01, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.05, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.01),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v6pmb"]
+_data = {
+"RESET": SubResource("Animation_ew4jo"),
+"end": SubResource("Animation_55taj"),
+"endFast": SubResource("Animation_wh74x")
+}
+
+[node name="Title" type="Node3D"]
+script = ExtResource("1_gp50i")
+nextLevel = ""
+gameMode = "title"
+
+[node name="UI" type="Node" parent="."]
+script = ExtResource("17_vbvrs")
+
+[node name="Sunflower" type="TextureRect" parent="UI"]
+offset_left = -192.0
+offset_top = -145.0
+offset_right = 448.0
+offset_bottom = 335.0
+scale = Vector2(0.4, 0.4)
+pivot_offset = Vector2(320, 240)
+texture = ExtResource("2_bwv21")
+
+[node name="Acorn" type="TextureRect" parent="UI"]
+offset_left = -192.0
+offset_top = -145.0
+offset_right = 448.0
+offset_bottom = 335.0
+scale = Vector2(0.4, 0.4)
+pivot_offset = Vector2(320, 240)
+size_flags_horizontal = 4
+texture = ExtResource("3_lkekw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI"]
+autoplay = "SunflowerSpin"
+libraries = {
+"": SubResource("AnimationLibrary_2q7uk")
+}
+
+[node name="audioSlider" type="HSlider" parent="UI"]
+offset_left = 38.0
+offset_top = 444.0
+offset_right = 219.0
+offset_bottom = 460.0
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="startBtn" type="Button" parent="UI"]
+offset_left = 35.0
+offset_top = 256.0
+offset_right = 152.0
+offset_bottom = 314.0
+focus_neighbor_bottom = NodePath("../collectBtn")
+focus_next = NodePath("../collectBtn")
+theme = SubResource("Theme_vaimv")
+text = "Start"
+
+[node name="collectBtn" type="Button" parent="UI"]
+offset_left = 35.0
+offset_top = 319.0
+offset_right = 152.0
+offset_bottom = 377.0
+focus_neighbor_top = NodePath("../startBtn")
+focus_next = NodePath("../startBtn")
+focus_previous = NodePath("../startBtn")
+theme = SubResource("Theme_vaimv")
+text = "Collect A thon"
+
+[node name="TextureRect" type="TextureRect" parent="UI"]
+visible = false
+offset_top = 361.0
+offset_right = 891.0
+offset_bottom = 544.0
+
+[node name="Transition" parent="UI" instance=ExtResource("20_pne6m")]
+visible = true
+offset_right = 640.0
+
+[node name="AnimationPlayer" parent="UI/Transition" index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_v6pmb")
+}
+
+[node name="loadingLBL" parent="UI/Transition" index="1"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85.2411, 36.9344, 43.5572)
+top_level = true
+current = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("7_hgnnl")
+
+[node name="acorn" parent="." instance=ExtResource("8_n7m35")]
+transform = Transform3D(-1.44392, -0.128933, -2.3297, 0.0162128, 2.73909, -0.161638, 2.33321, -0.0988239, -1.44062, 90.107, 36.8792, 31.2321)
+
+[node name="body" parent="acorn" index="0"]
+transform = Transform3D(-0.00209209, -0.0625555, -0.570421, 0.0382305, 0.569143, -0.0625555, 0.572566, -0.0382305, 0.00209257, -0.0394602, 1.37484, 0.0167046)
+
+[node name="hat" parent="acorn" index="1"]
+transform = Transform3D(-0.0025751, 0.021051, -0.702154, 0.0470595, -0.191527, -0.0770019, 0.704794, 0.0128652, 0.00257587, -0.0941544, 1.87247, -0.016716)
+
+[node name="leftFoot" parent="acorn" index="2"]
+transform = Transform3D(0.0368122, -0.0968357, -0.371935, 0.0191879, 0.187379, -0.192177, 0.282677, -0.000108529, 0.0614809, 0.066803, 0.790279, -0.246017)
+
+[node name="rightFoot" parent="acorn" index="3"]
+transform = Transform3D(-0.00751558, -0.0609637, -0.404927, 0.0504683, 0.198452, -0.122302, 0.281116, -0.0372577, 0.0111311, 0.066803, 0.790279, 0.253975)
+
+[node name="Earth" parent="." instance=ExtResource("12_0oq3f")]
+transform = Transform3D(5.55167, 0, -2.62972, 0, 6.143, 0, 2.62972, 0, 5.55167, 84.465, 30.1236, 30.6598)
+
+[node name="Moon" parent="." instance=ExtResource("11_g3ylg")]
+transform = Transform3D(1.31126, 0, 0, 0, 1.31126, 0, 0, 0, 1.31126, 96.3835, 37.1756, 28.0037)
+
+[connection signal="value_changed" from="UI/audioSlider" to="UI" method="_on_audio_slider_value_changed"]
+[connection signal="pressed" from="UI/startBtn" to="UI" method="_on_button_pressed"]
+[connection signal="pressed" from="UI/collectBtn" to="UI" method="collect_athon"]
+[connection signal="animation_finished" from="UI/Transition/AnimationPlayer" to="UI" method="_on_animation_player_animation_finished"]
+
+[editable path="UI/Transition"]
+[editable path="acorn"]
